@@ -1,43 +1,35 @@
-import React, { useState } from 'react'
-import { component_map } from '@/components'
 import { StyleSheet, Text, View } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import RecursiveComponent from '@/components/RecursiveComponent'
+import axios from 'axios'
 
-const RecursiveComponent = () => {
-    const data = [{
-        component: "default_view",
-        name: "container",
-        styles: {
-            flex: 1,
-            backgroundColor: "red",
-            width: 360,
-            height: 100
-        },
-        children:[{
-            component:"default_text",
-            name:"heading",
-            styles:{
-                color:"#fff",
-                fontSize:20,
-            },
-            content:"Hello"
-        }]
-    }]
+const Page = () => {
+    const [data, setData] = useState([])
 
-    return data.map(item => {
-        const Component = component_map[item.component]
-        return (<Component key={item.name} styles={item.styles}>
-            {item?.content}
-            {item.children && <RecursiveComponent data={item.children} />}
-        </Component>)
+    useEffect(() => {
+        (async function () {
+            try {
+                let { data } = await axios.get('https://pretty-banks-flash.loca.lt/home');
+                setData(data)
+            } catch (error) {
+                console.log(error)
+            }
+        })()
+    }, [])
 
-    })
+
+    return <>{
+        !!data.length ? <RecursiveComponent data={data} /> :
+            (<View style={{
+                flex: 1,
+                justifyContent: "center",
+                alignItems: "center",
+            }}>
+                <Text>Loading....</Text>
+            </View>)
+    }</>
 }
 
-export default RecursiveComponent
+export default Page
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        color: "red"
-    },
-})
+const styles = StyleSheet.create({})

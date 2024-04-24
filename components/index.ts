@@ -6,8 +6,8 @@ export interface IComponentMap {
 }
 
 export const component_map: IComponentMap = {
-    "default_view": View,
-    "default_text": Text,
-    "default_button": TouchableOpacity,
-    "default_input": TextInput,
+    "view": View,
+    "text": Text,
+    "button": TouchableOpacity,
+    "input": TextInput,
 }
